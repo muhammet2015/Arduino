@@ -1,0 +1,59 @@
+
+float heat;
+float newheat;
+int analogPin= A5;
+int ledPin1=5;
+int pump =7;
+int IRsensor=2;
+int statusSensor;
+int fan=9;
+void setup() {
+
+Serial.begin(9600);
+
+pinMode(5,OUTPUT);
+pinMode (IRsensor, INPUT);
+pinMode (pump, OUTPUT);
+pinMode (fan, OUTPUT);
+
+}
+
+void loop() {
+  
+heat = analogRead(analogPin);
+newheat = (heat/1023)*5000;
+heat = newheat / 10.0;
+if (heat < 26)
+{
+digitalWrite(ledPin1 ,HIGH);
+}
+else 
+{
+digitalWrite(ledPin1 ,LOW);
+}
+Serial.print("heat is:");
+Serial.print(heat);
+Serial.print('\n');
+delay(1000);
+
+statusSensor = digitalRead (IRsensor);
+    if (statusSensor == 1)
+{
+ digitalWrite(pump, LOW);
+
+}
+else
+  {
+    digitalWrite(pump, HIGH); 
+         delay(1000);
+  }
+
+ digitalWrite(fan, HIGH);
+ if(heat < 24)
+ {
+  digitalWrite(fan ,LOW);
+
+  }
+
+
+}
