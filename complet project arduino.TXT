@@ -1,0 +1,85 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+float heat;
+float newheat;
+int analogPin= A5;
+int ledPin1=1;
+int pump =7;
+int IRsensor=6;
+int statusSensor;
+int mizzle=8;
+int counter=0;
+#define in 14
+void IN()
+{
+  counter ++;
+  lcd.clear();
+  lcd.print("icerde  ");
+  lcd.print(counter);
+  lcd.setCursor(0,1);
+  lcd.print("heat is  ");
+  lcd.print(heat);
+  if(counter==5)
+{
+  lcd.clear();
+
+  lcd.print("yasak yasak");
+  }
+  }
+void setup() {
+
+Serial.begin(9600);
+ lcd.begin(16, 2);
+
+pinMode(5,OUTPUT);
+pinMode (IRsensor, INPUT);
+pinMode (pump, OUTPUT);
+pinMode (mizzle, OUTPUT);
+
+}
+
+void loop() {
+  
+heat = analogRead(analogPin);
+newheat = (heat/1023)*5000;
+heat = newheat / 10.0;
+if (heat < 26)
+{
+digitalWrite(ledPin1 ,HIGH);
+}
+else 
+{
+digitalWrite(ledPin1 ,LOW);
+}
+Serial.print("heat is:");
+Serial.print(heat);
+Serial.print('\n');
+delay(1000);
+
+statusSensor = digitalRead (IRsensor);
+    if (statusSensor == 1)
+{
+ digitalWrite(pump, LOW);
+
+}
+else
+  {
+    digitalWrite(pump, HIGH); 
+         delay(1000);
+  }
+
+  digitalWrite(mizzle, HIGH); 
+         delay(2000);
+  digitalWrite(mizzle, LOW); 
+
+         delay(30000);
+
+//----------lcd with ir ----------------------------
+
+IRsensor = digitalRead (IRsensor);
+    if (IRsensor == 1){
+IN();}
+
+
+  
+}
